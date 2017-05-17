@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PrototestiAJAX</title>
+  <meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    
+    function getTextBox(question) {
+        var field = "<input type"+text+"> + "+question+" + </input>"
+        return field;
+        
+    }
+    
+    
+    
+    
+    $("#plaa").click(function(){
+		var data = [{}];
+		
+		console.log("here");
+		$.ajax({
+		  type: 'GET',
+		  url: 'http://proto355.haaga-helia.fi:8080/questionnaire-course-project/questionnaire/question',
+		  crossDomain: true,
+		  async: false,
+		  contentType: 'application/json; charset=utf-8',
+		  dataType: 'json',
+		  success: function (data) {
+			  
+			$.each(data, function(i, field){
+				console.log(data[i].questionTypeId);
+            console.log(data[i].question);
+            console.log(data[i].oaOption);
+            
+             if (data[i].questionTypeId == 1) {
+            /*var testi2 = */getTextBox(data.question[i]);
+            $("#testi").text("Hello world!");
+            }
+               
+        /*$("#testi").text("Hello world!");*/
+				//console.log(data);
+				//tässä sitten rivikohtainen käsittely saaduille tuloksille, jonka jälkeen heitetään alemmalla rivillä koko paska rivi kerrallaan lomakkeelle
+                //$(".kysymyksetesimerkiks").append(field + " ");
+				i++
+            });
+		  },
+		  error: function(xhr, statusText, err){
+			alert("Error:" + xhr.status); 
+    }
+		    //error: function(data) { console.log(data.responseText, data); }
+		});
+    });
+    });
+</script>
+</head>
+<body>
+
+
+<button id="plaa">Get JSON data</button>
+
+
+<div id="testi"></div>
+
+</body>
+</html>
+
