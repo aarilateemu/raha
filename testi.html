@@ -7,9 +7,11 @@
 
 <script>
 $(document).ready(function(){
-    
+    var wrapper=$(".questions");
     function getTextBox(question) {
-        var field = "<input type"+text+"> + "+question+" + </input>"
+        var field = "<input type="+text+" id="+qId+" name="+question +" /input>";
+        $(wrapper).append(field);
+    
         return field;
         
     }
@@ -20,7 +22,7 @@ $(document).ready(function(){
     $("#plaa").click(function(){
 		var data = [{}];
 		
-		console.log("here");
+		
 		$.ajax({
 		  type: 'GET',
 		  url: 'http://proto355.haaga-helia.fi:8080/questionnaire-course-project/questionnaire/question',
@@ -32,37 +34,55 @@ $(document).ready(function(){
 			  
 			$.each(data, function(i, field){
 				console.log(data[i].questionTypeId);
-            console.log(data[i].question);
+           console.log(data[i].question);
             console.log(data[i].oaOption);
             
              if (data[i].questionTypeId == 1) {
-            /*var testi2 = */getTextBox(data.question[i]);
-            $("#testi").text("Hello world!");
+            var testi2 = getTextBox(data.question[i]);
+          
             }
                
         /*$("#testi").text("Hello world!");*/
 				//console.log(data);
 				//tässä sitten rivikohtainen käsittely saaduille tuloksille, jonka jälkeen heitetään alemmalla rivillä koko paska rivi kerrallaan lomakkeelle
                 //$(".kysymyksetesimerkiks").append(field + " ");
-				i++
+				
+(function () {
+    var old = console.log;
+    var logger = document.getElementById('log');
+    console.log = function () {
+      for (var i = 0; i < arguments.length; i++) {
+        if (typeof arguments[i] == 'object') {
+            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(arguments[i], undefined, 2) : arguments[i]) + '<br />';
+        } else {
+            logger.innerHTML += arguments[i] + '<br />';
+        }
+      }
+    }
+})();
+               
+               i++
             });
 		  },
-		  error: function(xhr, statusText, err){
-			alert("Error:" + xhr.status); 
-    }
+		 // error: function(xhr, statusText, err){
+			// alert("Error:" + xhr.status); 
+    //}
 		    //error: function(data) { console.log(data.responseText, data); }
 		});
     });
     });
+    
+
 </script>
 </head>
 <body>
 
 
-<button id="plaa">Get JSON data</button>
+<a href="#" id="plaa">Get JSON data</a>
+  <p>HUOM! Toimii vain koulun verkossa, tietokanta/protopalvelin ongelmista johtuen.</p>
+<pre id="log"></pre>
 
-
-<div id="testi"></div>
+<p id="questions"></p>
 
 </body>
 </html>
